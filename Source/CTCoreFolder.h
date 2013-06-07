@@ -82,6 +82,16 @@
 - (CTCoreMessage *)messageWithUID:(NSString *)uid;
 
 
+/*!
+ @abstract	This will return the message from this folder with the UID that was passed in. If the message
+ can't be found, nil is returned
+ @param		uids An array of uids, each uid as an NSString for the message to retrieve.
+ @result		An array of CTMessage objects is returned which can be used to get further information and perform operations
+ on the messages.
+ */
+- (NSArray *)messagesWithUIDs:(NSArray *)uids;
+
+
 //TODO Document me!
 //TODO Attributes is ignore, fix me!
 - (NSSet *)messageListWithFetchAttributes:(NSArray *)attributes;
@@ -160,6 +170,15 @@
                 documentation for flagsForMessage:
 */
 - (void)setFlags:(unsigned int)flags forMessage:(CTCoreMessage *)msg;
+
+/*!
+ @abstract	Sets flags on an array of messages at the server,
+ take a look at the documentation for flagsForMessage:
+ 
+ @param      flags: an array of flags of type unsigned int
+ msgs: an array of CTCoreMessage* objects
+ */
+- (void)setFlags:(NSArray *)flags forMessages:(NSArray *)msgs;
 
 /*!
     @astract	Deletes all messages contained in the folder that are marked for

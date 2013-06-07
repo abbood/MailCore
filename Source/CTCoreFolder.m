@@ -461,6 +461,54 @@ int imap_flags_to_flags(struct mailimap_msg_att_dynamic * att_dyn,
     return [[[CTCoreMessage alloc] initWithMessageStruct:msgStruct] autorelease];
 }
 
+- (NSArray *)messagesWithUIDs:(NSArray *)uids {
+    [self connect];
+    
+    NSMutableArray* messages = [@[] mutableCopy];
+    
+    [uids enumerateObjectsUsingBlock:^(NSString* uid, NSUInteger indx, BOOL *stop) {
+        int err;
+        struct mailmessage *msgStruct;
+        
+        err = mailfolder_get_message_by_uid([self folderStruct], [uid cStringUsingEncoding:NSUTF8StringEncoding], &msgStruct);
+        
+        if (err == MAIL_ERROR_MSG_NOT_FOUND) {
+            [messages addObject:[NSNull null]];
+            return;
+        }
+        else if (err != MAIL_NO_ERROR) {
+            NSException *exception = [NSException
+                                      exceptionWithName:CTUnknownError
+                                      reason:[NSString stringWithFormat:@"Error number: %d",err]
+                                      userInfo:nil];
+            [exception raise];
+        }
+        err = mailmessage_fetch_envelope(msgStruct,&(msgStruct->msg_fields));
+        if (err != MAIL_NO_ERROR) {
+            NSException *exception = [NSException
+                                      exceptionWithName:CTUnknownError
+                                      reason:[NSString stringWithFormat:@"Error number: %d",err]
+                                      userInfo:nil];
+            [exception raise];
+        }
+        
+        //TODO Fix me, i'm missing alot of things that aren't being downloaded,
+        // I just hacked this in here for the mean time
+        err = mailmessage_get_flags(msgStruct, &(msgStruct->msg_flags));
+        if (err != MAIL_NO_ERROR) {
+            NSException *exception = [NSException
+                                      exceptionWithName:CTUnknownError
+                                      reason:[NSString stringWithFormat:@"Error number: %d",err]
+                                      userInfo:nil];
+            [exception raise];
+        }
+        
+        [messages addObject:[[[CTCoreMessage alloc] initWithMessageStruct:msgStruct] autorelease]];
+    }];
+    
+    return messages;
+}
+
 /*	Why are flagsForMessage: and setFlags:forMessage: in CTCoreFolder instead of CTCoreMessage?
     One word: dependencies. These methods rely on CTCoreFolder and CTCoreMessage to do their work,
     if they were included with CTCoreMessage, than a reference to the folder would have to be kept at
@@ -494,6 +542,12 @@ int imap_flags_to_flags(struct mailimap_msg_att_dynamic * att_dyn,
     [self check];
 }
 
+- (void)setFlags:(NSArray *)flags forMessages:(NSArray *)msgs {
+    [msgs enumerateObjectsUsingBlock:^(CTCoreMessage* msg, NSUInteger indx, BOOL *stop) {
+        NSUInteger flag = [[flags objectAtIndex:indx] intValue];
+        [self setFlags:flag forMessage:msg];
+    }];
+}
 
 - (void)expunge {
     int err;
