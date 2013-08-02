@@ -184,7 +184,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(SRCROOT)/include/MailCore";
-			dstSubfolderSpec = 0;
+			dstSubfolderSpec = 16;
 			files = (
 				F86B543914F476560080FB8F /* JRLog.h in CopyFiles */,
 				F86B543814F476540080FB8F /* MailCoreTypes.h in CopyFiles */,
@@ -857,6 +857,7 @@
 					0xb0000000,
 				);
 				PRODUCT_NAME = MailCore;
+				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
 				ZERO_LINK = YES;
 			};
@@ -888,6 +889,7 @@
 					0xb0000000,
 				);
 				PRODUCT_NAME = MailCore;
+				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -902,6 +904,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
@@ -919,6 +922,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "libetpan/build-mac/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
@@ -995,6 +999,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = mailcore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -1008,6 +1013,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = mailcore;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				ZERO_LINK = NO;
 			};
 			name = Release;

@@ -310,7 +310,7 @@ int imap_flags_to_flags(struct mailimap_msg_att_dynamic * att_dyn,
                 case MAILIMAP_MSG_ATT_ITEM_STATIC:
                 switch (item->att_data.att_static->att_type) {
                     case MAILIMAP_MSG_ATT_UID:
-                    str = [[NSString alloc] initWithFormat:@"%d-%d", uidValidity,
+                    str = [[NSString alloc] initWithFormat:@"%lu-%d", (unsigned long)uidValidity,
                                         item->att_data.att_static->att_data.att_uid];
                     msg.uid = str;
                     [str release];
@@ -502,7 +502,6 @@ int imap_flags_to_flags(struct mailimap_msg_att_dynamic * att_dyn,
                                       userInfo:nil];
             [exception raise];
         }
-        
         [messages addObject:[[[CTCoreMessage alloc] initWithMessageStruct:msgStruct] autorelease]];
     }];
     
